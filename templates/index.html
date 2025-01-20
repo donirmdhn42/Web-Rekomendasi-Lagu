@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aurora Tunes</title>
+    <!-- Favicon dari Link Google -->
+    <link rel="icon" type="image/png" href="https://static.vecteezy.com/system/resources/previews/013/775/215/original/abstract-wave-and-line-logo-illustration-in-trendy-and-minimal-style-png.png" />
+    <!-- Tailwind CSS CDN -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  </head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <body class="bg-black min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-black">
+      <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+          <!-- Mobile menu button-->
+          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <button
+              id="menuButton"
+              type="button"
+              class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-controls="mobile-menu"
+              aria-expanded="false"
+            >
+              <span class="absolute -inset-0.5"></span>
+              <span class="sr-only">Open main menu</span>
+              <svg class="block size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+              <svg class="hidden size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Brand Name (tengah pada layar kecil) -->
+          <div class="flex items-center justify-center w-full sm:w-auto sm:ml-6 sm:text-left">
+            <span class="animate__animated animate__tada text-pink-500 font-bold text-xl sm:text-2xl tracking-wide">Aurora Tunes</span>
+          </div>
+
+          <!-- Menu on larger screens moved to the right -->
+          <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <div class="hidden sm:block sm:ml-auto">
+              <div class="flex space-x-4">
+                <a href="{{ url_for('index') }}" class="rounded-md bg-pink-500 px-3 py-2 text-sm font-medium text-dark" aria-current="page">Home</a>
+                <a href="{{ url_for('about') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">About</a>
+                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Blog</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div id="mobile-menu" class="sm:hidden hidden">
+          <div class="space-y-1 px-2 pb-3 pt-2">
+            <a href="{{ url_for('index') }}" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-pink-500" aria-current="page">Home</a>
+            <a href="{{ url_for('about') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">About</a>
+            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Blog</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <script>
+      const menuButton = document.getElementById('menuButton');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const menuIconOpen = menuButton.querySelector('svg:first-child');
+      const menuIconClose = menuButton.querySelector('svg:last-child');
+
+      menuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden'); // Toggle visibility of mobile menu
+        menuIconOpen.classList.toggle('hidden'); // Toggle open icon
+        menuIconClose.classList.toggle('hidden'); // Toggle close icon
+      });
+    </script>
+
+    <!-- Jumbotron Section -->
+    <div class="background-gradient relative py-16 px-8 text-white text-center rounded-xl shadow-lg">
+      <div class="absolute inset-0 bg-black opacity-50 rounded-xl"></div>
+      <div class="relative z-10" data-aos="zoom-in">
+        <h1 class="text-4xl font-bold mb-4">Temukan Lagu Berdasarkan Mood Anda</h1>
+        <p class="text-sm mb-8">Ceritakan suasana hati Anda hari ini, dan saya akan memberikan rekomendasi lagu yang sesuai!</p>
+
+        <!-- Mood Input Form -->
+        <form action="/search" method="POST" class="max-w-lg mx-auto space-y-4">
+          <!-- Input Field -->
+          <div class="mb-6">
+            <label for="mood" class="block text-sm font-medium text-gray-100 mt-5">Bagaimana perasaan Anda saat ini?</label>
+            <input
+              type="text"
+              name="mood"
+              id="mood"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-grey-500 text-sm text-gray-900 placeholder-gray-500 mt-5"
+              placeholder="Misalnya: Saya merasa sedih"
+              required
+            />
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="w-full bg-green-700 text-white py-2 rounded-lg hover:bg-green-800 transition duration-300 text-sm flex items-center justify-center">
+            <i class="fa fa-search"></i>
+            <span class="ml-2">Cari Rekomendasi Lagu</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Card Container -->
+    <div id="result" class="container mx-auto mt-8 px-4">
+      <div class="max-w-4xl mx-auto p-6 rounded-xl shadow-lg bg-white/20 backdrop-blur-md">
+        <!-- Mood Description -->
+        {% if description %}
+        <div class="p-4 rounded-xl mb-9 bg-gray-600 text-white shadow-sm">
+          <p class="text-center text-sm">{{ description }}</p>
+        </div>
+        {% endif %}
+
+        <!-- Display Songs -->
+        <!-- Display Songs -->
+        <div id="songs-container" class="p-6 rounded-xl">
+          <h2 class="text-xl text-center font-semibold text-gray-200 mb-0 mt-0">Rekomendasi Lagu</h2>
+        </div>
+
+        <!-- Song List -->
+        <div class="space-y-3">
+          {% for song in songs %}
+          <div class="song-item flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-600/40 transition-colors">
+            <p class="text-sm text-gray-100">{{ loop.index }}.</p>
+            <div class="flex-1">
+              <div class="flex items-center">
+                <!-- Album Image -->
+                <img src="{{ song.image_url }}" alt="Album Image" class="w-10 h-10 md:w-12 md:h-12 object-cover mr-3" />
+                <div>
+                  <!-- Song Details -->
+                  <p class="song-name text-xs sm:text-sm font-semibold text-white truncate md:truncate" title="{{ song.name }}">{{ song.name }}</p>
+                  <p class="text-xs text-white text-italic">{{ song.artist }}</p>
+                </div>
+              </div>
+            </div>
+            <a href="{{ song.url }}" class="inline-block py-1 px-3 text-xs sm:text-sm text-black bg-white rounded-md hover:bg-gray-200" target="_blank">
+              <b>Play</b>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+
+        <!-- Song Recommendations Description -->
+        <div class="mt-3 text-center text-xs text-gray-300">
+          <p>Rekomendasi lagu di atas disesuaikan dengan suasana hati atau mood anda saat ini.</p>
+        </div>
+
+        <!-- Error Message -->
+        {% if error %}
+        <div class="mt-8 text-center text-red-500 text-lg bg-red-100 p-4 rounded-md">
+          <p>{{ error }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <footer class="relative isolate overflow-hidden bg-black py-16 sm:py-24 lg:py-32" data-aos="fade-up">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+          <div class="max-w-xl lg:max-w-lg">
+            <h2 class="text-xl font-bold text-pink-500 mt-4">Aurora Tunes</h2>
+            <p class="mt-2 text-lg text-gray-300">Menyediakan Rekomendasi Lagu yang Tepat untuk Setiap Mood Anda, Membantu Anda Merasakan Keindahan Musik yang Beresonansi dengan Perasaan Anda.</p>
+          </div>
+          <dl class="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">
+            <div class="flex flex-col items-start">
+              <div class="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
+                <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.75V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1.75M6 6.75h12M6 6.75v10.5a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.75m-5.5 4.25h.008v.008H12.5V11ZM12.5 13.5h.008v.008H12.5V13.5Z" />
+                </svg>
+              </div>
+              <dt class="mt-4 text-base font-semibold text-white">Rekomendasi Lagu Berkualitas</dt>
+              <dd class="mt-2 text-base/7 text-gray-400">Memanfaatkan data Spotify untuk memberikan rekomendasi lagu yang luas dan terkurasi dengan kualitas tinggi.</dd>
+            </div>
+            <div class="flex flex-col items-start">
+              <div class="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
+                <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 12.75V7.5a4.5 4.5 0 1 1 9 0v6.375a2.625 2.625 0 1 1-5.25 0V7.5M9 7.5a4.5 4.5 0 0 0-9 0v6.375a2.625 2.625 0 1 0 5.25 0V7.5M18.75 17.625V18a3.75 3.75 0 1 1-7.5 0v-.375"
+                  />
+                </svg>
+              </div>
+              <dt class="mt-4 text-base font-semibold text-white">Akses Mudah dan Cepat</dt>
+              <dd class="mt-0 text-base/7 text-gray-400">Pengguna dapat dengan cepat dan mudah mendapatkan rekomendasi lagu yang sesuai dengan mood mereka tanpa menunggu lama.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </footer>
+    <script>
+      AOS.init();
+    </script>
+
+    <style>
+      /* Mengatur pemotongan teks untuk nama lagu pada perangkat mobile */
+@media (max-width: 640px) {
+  .song-name {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100px; /* Batas lebar teks di perangkat mobile */
+  }
+}
+
+.background-gradient {
+  background: radial-gradient(farthest-side at -33.33% 50%, #0000 52%, #202020 54% 57%, #0000 59%) 0 calc(128px / 2), radial-gradient(farthest-side at 50% 133.33%, #0000 52%, #202020 54% 57%, #0000 59%) calc(128px / 2) 0,
+    radial-gradient(farthest-side at 133.33% 50%, #0000 52%, #202020 54% 57%, #0000 59%), radial-gradient(farthest-side at 50% -33.33%, #0000 52%, #202020 54% 57%, #0000 59%), #000000;
+  background-size: calc(128px / 4.667) 128px, 128px calc(128px / 4.667);
+}
+
+.bg-card {
+  background-color: rgba(233, 233, 233, 0.8);
+  -webkit-backdrop-filter: blur(50px);
+  backdrop-filter: blur(50px);
+}
+
+    </style>
+  </body>
+</html>
