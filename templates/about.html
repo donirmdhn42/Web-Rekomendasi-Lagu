@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aurora Tunes</title>
+    <!-- Favicon dari Link Google -->
+    <link rel="icon" type="image/png" href="https://static.vecteezy.com/system/resources/previews/013/775/215/original/abstract-wave-and-line-logo-illustration-in-trendy-and-minimal-style-png.png" />
+    <!-- Tailwind CSS CDN -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+  </head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <body class="bg-black min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-black">
+      <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+          <!-- Mobile menu button-->
+          <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <button
+              id="menuButton"
+              type="button"
+              class="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              aria-controls="mobile-menu"
+              aria-expanded="false"
+            >
+              <span class="absolute -inset-0.5"></span>
+              <span class="sr-only">Open main menu</span>
+              <svg class="block size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+              <svg class="hidden size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Brand Name (tengah pada layar kecil) -->
+          <div class="flex items-center justify-center w-full sm:w-auto sm:ml-6 sm:text-left">
+            <span class="animate__animated animate__tada text-pink-500 font-bold text-xl sm:text-2xl tracking-wide">Aurora Tunes</span>
+          </div>
+
+          <!-- Menu on larger screens moved to the right -->
+          <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <div class="hidden sm:block sm:ml-auto">
+              <div class="flex space-x-4">
+                <a href="{{ url_for('index') }}" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Home</a>
+                <a href="{{ url_for('about') }}" class="rounded-md bg-pink-500 px-3 py-2 text-sm font-medium text-dark" aria-current="page">About</a>
+                <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Blog</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile menu, show/hide based on menu state. -->
+        <div id="mobile-menu" class="sm:hidden hidden">
+          <div class="space-y-1 px-2 pb-3 pt-2">
+            <a href="{{ url_for('index') }}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Home</a>
+            <a href="{{ url_for('about') }}" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-pink-500" aria-current="page">About</a>
+            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Blog</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <script>
+      const menuButton = document.getElementById('menuButton');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const menuIconOpen = menuButton.querySelector('svg:first-child');
+      const menuIconClose = menuButton.querySelector('svg:last-child');
+
+      menuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden'); // Toggle visibility of mobile menu
+        menuIconOpen.classList.toggle('hidden'); // Toggle open icon
+        menuIconClose.classList.toggle('hidden'); // Toggle close icon
+      });
+    </script>
+
+<div class="bg-black py-24 sm:py-32">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="mx-auto max-w-2xl lg:text-center">
+        <h2 class="text-base/7 font-semibold text-white">Temukan Lagu yang Tepat</h2>
+        <p class="mt-2 text-pretty text-4xl font-semibold tracking-tight text-white sm:text-5xl lg:text-balance">Rekomendasi Lagu Sesuai Suasana Hati Anda</p>
+        <p class="mt-6 text-lg/8 text-white">Aurora Tunes membantu Anda menemukan lagu yang cocok dengan suasana hati Anda. Cukup pilih perasaan Anda, dan kami akan merekomendasikan lagu terbaik yang tersedia di Spotify.</p>
+      </div>
+      <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+        <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
+          <div class="relative pl-16">
+            <dt class="text-base/7 font-semibold text-white">
+              <div class="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600">
+                <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" />
+                </svg>
+              </div>
+              Rekomendasi Berdasarkan Mood
+            </dt>
+            <dd class="mt-2 text-base/7 text-white">Pilih suasana hati Anda, dan kami akan memberikan daftar lagu yang akan mencocokkan perasaan Anda.</dd>
+          </div>
+          <div class="relative pl-16">
+            <dt class="text-base/7 font-semibold text-white">
+              <div class="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600">
+                <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
+              </div>
+              Akses API Spotify
+            </dt>
+            <dd class="mt-2 text-base/7 text-white">Kami menggunakan API Spotify untuk memberikan lagu-lagu yang tepat dari koleksi musik terbesar di dunia.</dd>
+          </div>
+          <div class="relative pl-16">
+            <dt class="text-base/7 font-semibold text-white">
+              <div class="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600">
+                <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                </svg>
+              </div>
+              Mudah Digunakan
+            </dt>
+            <dd class="mt-2 text-base/7 text-white">Antarmuka yang sederhana dan mudah digunakan untuk memudahkan Anda dalam memilih mood dan mendapatkan rekomendasi musik.</dd>
+          </div>
+          <div class="relative pl-16">
+            <dt class="text-base/7 font-semibold text-white">
+              <div class="absolute left-0 top-0 flex size-10 items-center justify-center rounded-lg bg-indigo-600">
+                <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M7.864 4.243A7.5 7.5 0 0 1 19.5 10.5c0 2.92-.556 5.709-1.568 8.268M5.742 6.364A7.465 7.465 0 0 0 4.5 10.5a7.464 7.464 0 0 1-1.15 3.993m1.989 3.559A11.209 11.209 0 0 0 8.25 10.5a3.75 3.75 0 1 1 7.5 0c0 .527-.021 1.049-.064 1.565M12 10.5a14.94 14.94 0 0 1-3.6 9.75m6.633-4.596a18.666 18.666 0 0 1-2.485 5.33" />
+                </svg>
+              </div>
+              Keamanan Terjamin
+            </dt>
+            <dd class="mt-2 text-base/7 text-white">Kami menjaga keamanan data Anda dan memastikan pengalaman pengguna yang aman dan nyaman.</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+  
+  
+    
+
+    <footer class="relative isolate overflow-hidden bg-black py-16 sm:py-24 lg:py-32" data-aos="fade-up">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-2">
+          <div class="max-w-xl lg:max-w-lg">
+            <h2 class="text-xl font-bold text-pink-500 mt-4">Aurora Tunes</h2>
+            <p class="mt-2 text-lg text-gray-300">Menyediakan Rekomendasi Lagu yang Tepat untuk Setiap Mood Anda, Membantu Anda Merasakan Keindahan Musik yang Beresonansi dengan Perasaan Anda.</p>
+          </div>
+          <dl class="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:pt-2">
+            <div class="flex flex-col items-start">
+              <div class="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
+                <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 6.75V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v1.75M6 6.75h12M6 6.75v10.5a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6.75m-5.5 4.25h.008v.008H12.5V11ZM12.5 13.5h.008v.008H12.5V13.5Z" />
+                </svg>
+              </div>
+              <dt class="mt-4 text-base font-semibold text-white">Rekomendasi Lagu Berkualitas</dt>
+              <dd class="mt-2 text-base/7 text-gray-400">Memanfaatkan data Spotify untuk memberikan rekomendasi lagu yang luas dan terkurasi dengan kualitas tinggi.</dd>
+            </div>
+            <div class="flex flex-col items-start">
+              <div class="rounded-md bg-white/5 p-2 ring-1 ring-white/10">
+                <svg class="size-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 12.75V7.5a4.5 4.5 0 1 1 9 0v6.375a2.625 2.625 0 1 1-5.25 0V7.5M9 7.5a4.5 4.5 0 0 0-9 0v6.375a2.625 2.625 0 1 0 5.25 0V7.5M18.75 17.625V18a3.75 3.75 0 1 1-7.5 0v-.375"
+                  />
+                </svg>
+              </div>
+              <dt class="mt-4 text-base font-semibold text-white">Akses Mudah dan Cepat</dt>
+              <dd class="mt-0 text-base/7 text-gray-400">Pengguna dapat dengan cepat dan mudah mendapatkan rekomendasi lagu yang sesuai dengan mood mereka tanpa menunggu lama.</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </footer>
+    <script>
+      AOS.init();
+    </script>
+  </body>
+</html>
